@@ -5,8 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>2.7.5</version>  <!-- 必须和common一致 -->
     </parent>
     <groupId>com.atguigu.gulimall</groupId>
     <artifactId>gulimall-coupon</artifactId>
@@ -27,25 +26,77 @@
         <url/>
     </scm>
     <properties>
-        <java.version>17</java.version>
-        <spring-cloud.version>2025.1.0</spring-cloud.version>
+        <java.version>17</java.version>  <!-- 必须改成1.8或11 -->
+        <spring-cloud.version>2021.0.8</spring-cloud.version>
+        <!-- 添加MyBatis-Plus版本管理 -->
+<!--        <mybatis-plus.version>3.5.7</mybatis-plus.version>-->
+<!--        <mysql.version>8.3.0</mysql.version>-->
+        <logback.version>1.2.11</logback.version>
     </properties>
     <dependencies>
+        <!-- 公共模块 -->
+        <dependency>
+            <groupId>com.atguigu.gulimall</groupId>
+            <artifactId>gulimall-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Web MVC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>  <!-- 改为web，不是webmvc -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+
+        <!-- OpenFeign -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
+        <!-- ============ 数据库相关依赖（关键！） ============ -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.5.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.0.33</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- 3. 移除错误的依赖 -->
+        <!-- <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-annotation</artifactId>
+            <version>3.5.5</version>
+            <scope>compile</scope>
+        </dependency> -->
+        <!-- 这个mybatis-plus-annotation是单独的，不需要！ -->
+        <!-- mybatis-plus-boot-starter已经包含了所有需要的依赖 -->
+
+        <!-- 测试依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
     </dependencies>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -66,5 +117,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

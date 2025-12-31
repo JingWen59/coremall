@@ -2,7 +2,9 @@ package com.atguigu.gulimall.ware;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.mybatis.spring.annotation.MapperScan;
 
+@MapperScan("com.atguigu.gulimall.ware.dao")
 @SpringBootApplication
 public class GulimallWareApplication {
 
