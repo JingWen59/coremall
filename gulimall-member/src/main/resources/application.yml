@@ -1,15 +1,20 @@
 spring:
+  application:
+    name: gulimall-member
   datasource:
     username: root
     password: root
     url: jdbc:mysql://8.159.145.116:3306/gulimall_ums
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
   cloud:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
-  application:
-    name: gulimall-member
+#        enabled: true  # 启用Nacos，但注册由延迟注册器控制
+#        register-enabled: false  # 禁用自动注册
+
+server:
+  port: 8000
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
@@ -17,5 +22,115 @@ mybatis-plus:
     db-config:
       id-type: auto
 
-server:
-  port: 8000
+# 日志配置
+#logging:
+#  level:
+#    com.atguigu.gulimall.member.config.DelayedNacosRegistrar: DEBUG
+#    com.alibaba.cloud.nacos: INFO
+
+#spring:
+#  application:
+#    name: gulimall-member
+#  datasource:
+#    username: root
+#    password: root
+#    url: jdbc:mysql://8.159.145.116:3306/gulimall_ums
+#    driver-class-name: com.mysql.cj.jdbc.Driver  # 建议使用新版驱动
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 127.0.0.1:8848
+#        # 新增的关键配置
+#        enabled: true
+#        # 服务分组
+#        group: DEFAULT_GROUP
+#        # 命名空间（如果Nacos有命名空间配置）
+#        namespace: public
+#        # 集群名称
+#        cluster-name: DEFAULT
+#        # 服务注册IP（可选，不配置会自动获取）
+#        ip: 127.0.0.1
+#        port: ${server.port}
+#        # 服务权重
+#        weight: 1.0
+#        # 是否注册
+#        register-enabled: true
+#        # 是否启用
+#        watch-enabled: true
+#        # 监听间隔（毫秒）
+#        watch-delay: 30000
+#        # 心跳间隔
+#        heart-beat-interval: 5000
+#        # 心跳超时
+#        heart-beat-timeout: 15000
+#        # IP删除超时
+#        ip-delete-timeout: 30000
+#        # 网络类型
+#        net-type: external
+#        # 不加载缓存
+#        naming-load-cache-at-start: false
+#
+## 服务器配置
+#server:
+#  port: 8000
+#  servlet:
+#    context-path: /
+#
+## MyBatis Plus 配置
+#mybatis-plus:
+#  mapper-locations: classpath:/mapper/**/*.xml
+#  global-config:
+#    db-config:
+#      id-type: auto
+#      # 逻辑删除配置（如果需要）
+#      logic-delete-field: is_deleted
+#      logic-delete-value: 1
+#      logic-not-delete-value: 0
+#  configuration:
+#    # 开启驼峰命名转换
+#    map-underscore-to-camel-case: true
+#    # 开启缓存
+#    cache-enabled: true
+#    # 打印SQL日志（开发环境开启）
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#
+## 日志配置（可选）
+#logging:
+#  level:
+#    com.atguigu.gulimall.member: debug
+#    com.alibaba.cloud.nacos: debug
+#    com.alibaba.nacos: warn
+#  pattern:
+#    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n"
+#
+## 应用配置
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#  endpoint:
+#    health:
+#      show-details: always
+
+#spring:
+#  datasource:
+#    username: root
+#    password: root
+#    url: jdbc:mysql://8.159.145.116:3306/gulimall_ums
+#    driver-class-name: com.mysql.jdbc.Driver
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 127.0.0.1:8848
+#  application:
+#    name: gulimall-member
+#
+#mybatis-plus:
+#  mapper-locations: classpath:/mapper/**/*.xml
+#  global-config:
+#    db-config:
+#      id-type: auto
+#
+#server:
+#  port: 8000

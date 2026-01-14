@@ -21,7 +21,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <spring-cloud.version>2021.0.9</spring-cloud.version>  <!-- 改成9 -->
+        <spring-cloud.version>2021.0.8</spring-cloud.version>  <!-- 改成9 -->
         <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
     </properties>
 
@@ -73,22 +73,53 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <version>3.1.8</version>
+<!--            <version>3.1.8</version>-->
         </dependency>
 
         <!-- Spring Cloud LoadBalancer（解决你的问题） -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
-            <version>3.1.8</version>  <!-- 添加这个 -->
+<!--            <version>3.1.8</version>  &lt;!&ndash; 添加这个 &ndash;&gt;-->
         </dependency>
 
-        <!-- Spring Cloud Alibaba Nacos -->
+        <!-- 2. 在member中统一添加Nacos依赖 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <version>2021.0.5.0</version>  <!-- 使用你已有的版本 -->
+            <exclusions>
+                <exclusion>
+                    <groupId>com.alibaba.nacos</groupId>
+                    <artifactId>nacos-client</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>com.alibaba.cloud</groupId>-->
 <!--            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>-->
 <!--            &lt;!&ndash; 不要加version &ndash;&gt;-->
+<!--            &lt;!&ndash; 排除有问题的依赖 &ndash;&gt;-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>com.alibaba.nacos</groupId>-->
+<!--                    <artifactId>nacos-client</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
 <!--        </dependency>-->
+
+        <!-- 强制使用 Nacos 1.4.3 -->
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.nacos</groupId>-->
+<!--            <artifactId>nacos-client</artifactId>-->
+<!--            <version>1.4.2</version>-->
+<!--        </dependency>-->
+        <!-- 3. 指定具体的nacos-client版本 -->
+        <dependency>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>nacos-client</artifactId>
+            <version>1.4.2</version>  <!-- 稳定版本 -->
+        </dependency>
 
         <!-- 测试 -->
         <dependency>
@@ -102,6 +133,12 @@
             <groupId>com.atguigu.gulimall</groupId>
             <artifactId>gulimall-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.alibaba.cloud</groupId>
+                    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -122,6 +159,36 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>enforce-nacos-version</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireProperty>
+                                    <property>nacos.version</property>
+                                    <message>必须使用 Nacos 1.4.2</message>
+                                </requireProperty>
+                                <bannedDependencies>
+                                    <excludes>
+                                        <exclude>com.alibaba.nacos:nacos-client:[2.0,)</exclude>
+                                    </excludes>
+                                    <!-- 改为警告，不失败 -->
+                                    <level>WARN</level>
+                                </bannedDependencies>
+                            </rules>
+                            <!-- 不阻止构建 -->
+                            <fail>false</fail>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
