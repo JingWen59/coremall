@@ -1,0 +1,62 @@
+//package com.atguigu.gulimall.gateway.config;
+//
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.web.cors.CorsConfiguration;
+//import org.springframework.web.cors.CorsConfigurationSource;
+//import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+//import org.springframework.web.cors.reactive.CorsWebFilter;
+//import org.springframework.web.filter.CorsFilter;
+//
+//import java.util.Arrays;
+//
+//@SuppressWarnings({"deprecation", "removal"})
+//@Configuration
+//public class GulimallCorsConfiguration {
+//
+//    @Bean
+//    public CorsWebFilter corsWebFilter(){
+//        UrlBasedCorsConfigurationSource source =  new UrlBasedCorsConfigurationSource();
+//
+//        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//
+//        //1、配置跨域
+//        corsConfiguration.addAllowedHeader("*");
+//        corsConfiguration.addAllowedMethod("*");
+//        corsConfiguration.addAllowedOrigin("*");
+//        corsConfiguration.setAllowCredentials(true);
+//
+//        source.registerCorsConfiguration("/**",corsConfiguration);
+//        return new CorsWebFilter(source);
+//    }
+//}
+package com.atguigu.gulimall.gateway.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+
+@Configuration
+public class GulimallCorsConfiguration {
+
+    @Bean
+    public CorsWebFilter corsWebFilter() {
+        // 使用 reactive 包的 UrlBasedCorsConfigurationSource
+        org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource source =
+                new org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource();
+
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+
+        // 配置跨域 - 使用新的API
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addAllowedOriginPattern("*"); // 替换 addAllowedOrigin
+        corsConfiguration.setAllowCredentials(true);
+//        corsConfiguration.setMaxAge(3600L);
+
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return new CorsWebFilter(source);
+    }
+}
